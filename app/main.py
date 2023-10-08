@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, session, flash, jsonify, send
 from pychartjs import BaseChart, ChartType, Color
 from decouple import config
 import pandas as pd
+import openpyxl
 
 def create_chart(x_column, y_column, data_frame):
     x_data = data_frame[x_column].tolist()
@@ -58,7 +59,7 @@ def process_file():
         if file.filename.endswith('.csv'):
             engine = 'python'
         elif file.filename.endswith(('.xlsx')):
-            engine = None
+            engine = 'openpyxl'
         else:
             flash('Unsupported file format', 'error')
             return redirect(request.url)
@@ -67,7 +68,7 @@ def process_file():
             if engine == 'python':
                 df = pd.read_csv(file)
             else:
-                df = pd.read_excel(file)
+                df = pd.read_excel(file, engine='openpyxl')
 
             columns = df.columns.tolist()
 
@@ -79,7 +80,7 @@ def process_file():
             return redirect(request.url)
 
     return 'File processed successfully'
-    
+
 @app.route('/generate_chart', methods=['POST'])
 def generate_chart():
     x_column = request.form['x_column']
@@ -95,4 +96,4 @@ def generate_chart():
         return "Dados do arquivo não encontrados."
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
