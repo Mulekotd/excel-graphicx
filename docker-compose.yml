@@ -1,0 +1,10 @@
+version: '3'
+services:
+  excel-graphicx:
+    build:
+      context: ./
+      dockerfile: dockerfiles/python
+    container_name: excel-graphicx
+    volumes:
+      - ./app:/app
+    network_mode: host

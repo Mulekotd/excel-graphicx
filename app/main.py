@@ -6,7 +6,7 @@ import pandas as pd
 
 def create_chart(x_column, y_column, data_frame):
     x_data = data_frame[x_column].tolist()
-    
+
     if data_frame[y_column].dtype == 'O':
         y_data = data_frame[y_column].str.replace(',', '').astype(float).tolist()
     else:
@@ -47,9 +47,9 @@ def process_file():
     if 'file' not in request.files:
         flash('No file part', 'error')
         return redirect(request.url)
-    
+
     file = request.files['file']
-    
+
     if file.filename == '':
         flash('No selected file', 'error')
         return redirect(request.url)
